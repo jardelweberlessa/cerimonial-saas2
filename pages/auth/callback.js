@@ -1,24 +1,15 @@
+// pages/auth/callback.js
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { supabase } from '../../lib/supabaseClient';
 
 export default function AuthCallback() {
   const router = useRouter();
-
   useEffect(() => {
     const go = async () => {
-      // Dá um tempinho para o Supabase processar o token da URL
-      await new Promise((r) => setTimeout(r, 600));
-
-      // Checa se a sessão foi criada
+      await new Promise(r => setTimeout(r, 600));
       const { data: { session } } = await supabase.auth.getSession();
-
-      // Redireciona conforme o resultado
-      if (session) {
-        router.replace('/app');
-      } else {
-        router.replace('/login');
-      }
+      await router.replace(session ? '/app' : '/login');
     };
     go();
   }, [router]);
