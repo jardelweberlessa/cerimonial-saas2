@@ -6,11 +6,11 @@ import { supabase } from '../lib/supabaseClient';
 export default function Home() {
   const router = useRouter();
   useEffect(() => {
-    const go = async () => {
+    (async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      router.replace(session ? '/app' : '/login');
-    };
-    go();
+      if (session) router.replace('/app/events');
+      else router.replace('/login');
+    })();
   }, [router]);
   return null;
 }
