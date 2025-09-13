@@ -1,4 +1,3 @@
-// pages/login.js
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { supabase } from '../lib/supabaseClient';
@@ -46,10 +45,10 @@ export default function Login() {
     e.preventDefault();
     setSending(true);
     let base = process.env.NEXT_PUBLIC_SITE_URL || (typeof window !== 'undefined' ? window.location.origin : '');
-    const siteBase = normalizeBaseUrl(base);
+    const site = normalizeBaseUrl(base);
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim(),
-      options: { emailRedirectTo: `${siteBase}/auth/callback` }
+      options: { emailRedirectTo: `${site}/auth/callback` }
     });
     setSending(false);
     if (error) return alert('Erro ao enviar link: ' + error.message);
@@ -60,45 +59,43 @@ export default function Login() {
     if (!email.trim()) return alert('Digite seu e-mail no campo acima.');
     let base = process.env.NEXT_PUBLIC_SITE_URL || (typeof window !== 'undefined' ? window.location.origin : '');
     const site = normalizeBaseUrl(base);
-    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-      redirectTo: `${site}/auth/reset`
-    });
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo: `${site}/auth/reset` });
     if (error) alert('Erro: ' + error.message);
     else alert('Enviamos um e-mail para redefinir sua senha.');
   };
 
   return (
-    <div className="min-h-screen grid place-items-center p-4">
-      <div className="card max-w-md w-full grid gap-3">
-        <h1 className="text-xl font-semibold text-center">Entrar</h1>
+    <div style={{minHeight:'100vh',display:'grid',placeItems:'center',padding:16,fontFamily:'system-ui,-apple-system,Segoe UI,Roboto'}}>
+      <div style={{maxWidth:420,width:'100%',border:'1px solid #ddd',borderRadius:12,padding:16,display:'grid',gap:12}}>
+        <h1 style={{fontSize:20,fontWeight:600,textAlign:'center'}}>Entrar</h1>
 
-        <div className="flex justify-center gap-2 text-sm">
-          <button className="btn" onClick={()=>setMode('password')}>Com senha</button>
-          <button className="btn" onClick={()=>setMode('signup')}>Criar conta</button>
-          <button className="btn" onClick={()=>setMode('magic')}>Link por e-mail</button>
+        <div style={{display:'flex',justifyContent:'center',gap:8}}>
+          <button onClick={()=>setMode('password')}>Com senha</button>
+          <button onClick={()=>setMode('signup')}>Criar conta</button>
+          <button onClick={()=>setMode('magic')}>Link por e-mail</button>
         </div>
 
         {mode === 'password' && (
-          <form onSubmit={onLoginPassword} className="grid gap-3">
-            <input className="input" type="email" placeholder="voce@exemplo.com" value={email} onChange={e=>setEmail(e.target.value)} required />
-            <input className="input" type="password" placeholder="Sua senha" value={password} onChange={e=>setPassword(e.target.value)} required />
-            <button className="btn" disabled={sending}>{sending ? 'Entrando…' : 'Entrar'}</button>
-            <button type="button" className="text-sm text-blue-600" onClick={forgot}>Esqueci minha senha</button>
+          <form onSubmit={onLoginPassword} style={{display:'grid',gap:8}}>
+            <input type="email" placeholder="voce@exemplo.com" value={email} onChange={e=>setEmail(e.target.value)} required />
+            <input type="password" placeholder="Sua senha" value={password} onChange={e=>setPassword(e.target.value)} required />
+            <button disabled={sending}>{sending ? 'Entrando…' : 'Entrar'}</button>
+            <button type="button" onClick={forgot} style={{color:'#2563eb',background:'none',border:'none'}}>Esqueci minha senha</button>
           </form>
         )}
 
         {mode === 'signup' && (
-          <form onSubmit={onSignup} className="grid gap-3">
-            <input className="input" type="email" placeholder="voce@exemplo.com" value={email} onChange={e=>setEmail(e.target.value)} required />
-            <input className="input" type="password" placeholder="Crie uma senha (12+ caracteres)" value={password} onChange={e=>setPassword(e.target.value)} required />
-            <button className="btn" disabled={sending}>{sending ? 'Criando…' : 'Criar conta'}</button>
+          <form onSubmit={onSignup} style={{display:'grid',gap:8}}>
+            <input type="email" placeholder="voce@exemplo.com" value={email} onChange={e=>setEmail(e.target.value)} required />
+            <input type="password" placeholder="Crie uma senha (12+)" value={password} onChange={e=>setPassword(e.target.value)} required />
+            <button disabled={sending}>{sending ? 'Criando…' : 'Criar conta'}</button>
           </form>
         )}
 
         {mode === 'magic' && (
-          <form onSubmit={onMagic} className="grid gap-3">
-            <input className="input" type="email" placeholder="voce@exemplo.com" value={email} onChange={e=>setEmail(e.target.value)} required />
-            <button className="btn" disabled={sending}>{sending ? 'Enviando…' : 'Enviar link mágico'}</button>
+          <form onSubmit={onMagic} style={{display:'grid',gap:8}}>
+            <input type="email" placeholder="voce@exemplo.com" value={email} onChange={e=>setEmail(e.target.value)} required />
+            <button disabled={sending}>{sending ? 'Enviando…' : 'Enviar link mágico'}</button>
           </form>
         )}
       </div>
