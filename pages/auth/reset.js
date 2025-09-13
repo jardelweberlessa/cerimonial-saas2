@@ -1,4 +1,3 @@
-// pages/auth/reset.js
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { supabase } from '../../lib/supabaseClient';
@@ -33,15 +32,15 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="min-h-screen grid place-items-center p-4">
-      <div className="card max-w-md w-full">
-        <h1 className="text-xl font-semibold">Redefinir senha</h1>
-        <p className="text-sm text-gray-600 mt-1">{msg}</p>
+    <div style={{minHeight:'100vh',display:'grid',placeItems:'center',padding:16,fontFamily:'system-ui,-apple-system,Segoe UI,Roboto'}}>
+      <div style={{maxWidth:420,width:'100%',border:'1px solid #ddd',borderRadius:12,padding:16}}>
+        <h1 style={{fontSize:20,fontWeight:600}}>Redefinir senha</h1>
+        <p style={{fontSize:14,color:'#666',marginTop:6}}>{msg}</p>
         {ok && (
-          <form onSubmit={submit} className="mt-4 grid gap-3">
-            <input className="input" type="password" placeholder="Nova senha (12+ caracteres)" value={pwd1} onChange={e=>setPwd1(e.target.value)} required />
-            <input className="input" type="password" placeholder="Repita a nova senha" value={pwd2} onChange={e=>setPwd2(e.target.value)} required />
-            <button className="btn" disabled={saving}>{saving ? 'Salvando…' : 'Salvar'}</button>
+          <form onSubmit={submit} style={{marginTop:12,display:'grid',gap:8}}>
+            <input type="password" placeholder="Nova senha (12+)" value={pwd1} onChange={e=>setPwd1(e.target.value)} required />
+            <input type="password" placeholder="Repita a nova senha" value={pwd2} onChange={e=>setPwd2(e.target.value)} required />
+            <button disabled={saving}>{saving ? 'Salvando…' : 'Salvar'}</button>
           </form>
         )}
       </div>
