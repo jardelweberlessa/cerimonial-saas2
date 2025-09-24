@@ -8,10 +8,12 @@
     "postinstall": "next telemetry disable || true"
   },
   "dependencies": {
-    "@supabase/supabase-js": "2.45.4",
-    "next": "14.2.5",
+    "@supabase/supabase-js": "^2.45.4",
+    "next": "^14.2.33",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
-  "engines": { "node": ">=18.17" }
+  "engines": {
+    "node": ">=18.17"
+  }
 }
