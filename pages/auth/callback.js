@@ -1,16 +1,17 @@
-// pages/auth/callback.js
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { supabase } from '../../lib/supabaseClient';
 
-export default function AuthCallback(){
+export default function Callback() {
   const router = useRouter();
   useEffect(() => {
-    (async () => {
-      await new Promise(r => setTimeout(r, 600));
+    // dá um tempo pro supabase processar o hash do magic link e salvar a sessão
+    const t = setTimeout(async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      router.replace(session ? '/app/events' : '/login');
-    })();
+      if (session) router.replace('/events');
+      else router.replace('/login');
+    }, 400);
+    return () => clearTimeout(t);
   }, [router]);
-  return <div style={{minHeight:'100vh',display:'grid',placeItems:'center'}}>Entrando…</div>;
+  return <p style={{padding:20}}>Entrando…</p>;
 }
